@@ -14,6 +14,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -32,16 +34,24 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import c.www.carovignoviva.Server.GetFromServer;
 import c.www.carovignoviva.R;
 
 public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallback, LocationListener {
@@ -60,6 +70,7 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boolean reachable = false;
+        FirebaseApp.initializeApp(this);
 
         if (!isOnline()) {
             error();
@@ -67,17 +78,14 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
 
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             provider = locationManager.getBestProvider(new Criteria(), false);
-            try {
-                if(Locale.getDefault().getDisplayLanguage().equals("English"))
-                    monumenti = new Monumento().monumentoFromJson(new GetFromServer().execute("carovigno_en.php").get(), getBaseContext());
-                else
-                //CARICO I MONUMENTI DALLA PAGINA PHP
-                monumenti = new Monumento().monumentoFromJson(new GetFromServer().execute("carovigno.php").get(), getBaseContext());
-                if (provider != null && location != null && adapter != null)
-                    setDistances(location.getLatitude(), location.getLongitude());
-            } catch (JSONException | InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
+            if(Locale.getDefault().getDisplayLanguage().equals("English"))
+                this.getMonumentFromFirebase("carovigno","monumenti");
+            else
+                this.getMonumentFromFirebase("carovigno","monumenti");
+            //CARICO I MONUMENTI DALLA PAGINA PHP
+            // monumenti = new Monumento().monumentoFromJson( getBaseContext());
+            if (provider != null && location != null && adapter != null)
+                setDistances(location.getLatitude(), location.getLongitude());
             setContentView(R.layout.slideup);
             MapFragment mapFragment = MapFragment.newInstance();
             getFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
@@ -85,6 +93,55 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
             slidingUpPanelLayout = findViewById(R.id.sliding_layout);
         }
     }
+    private void getMonumentFromFirebase(String... voids){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("city/"+voids[0]+"/");
+        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                JSONArray json_array = new JSONArray();
+                for (DataSnapshot children : task.getResult().child(voids[1]).getChildren()) {
+                    Log.i("test", children.getKey() );
+                    JSONObject json_obj = new JSONObject();
+                    for (DataSnapshot children2 : task.getResult().child(voids[1]).child(children.getKey()).getChildren()) {
+                        try {
+
+                            Log.i("test", children2.getKey() );
+                            json_obj.put(children2.getKey(), children2.getValue());
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    for (DataSnapshot children2 : task.getResult().child("image").child(children.getKey()).getChildren()) {
+                        try {
+
+                            Log.i("test", children2.getKey() );
+                            json_obj.put("img"+(Integer.parseInt(children2.getKey())+1), children2.getValue());
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    json_array.put(json_obj);
+                }
+                try {
+                    Log.i("test", json_array.toString() );
+                    monumenti = new Monumento().monumentoFromJson(json_array);
+                    if (monumenti != null) {
+                        addMarker();
+                        creaLista();
+                        setCustomInfoWindows();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
     @Override
     protected void onResume() {
@@ -172,11 +229,7 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
         });
         //ESPANDO IL PANNELLO SLIDING
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-        if (monumenti != null) {
-            addMarker();
-            creaLista();
-            setCustomInfoWindows();
-        }
+
 
     }
 

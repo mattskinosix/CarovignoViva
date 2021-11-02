@@ -13,8 +13,6 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
-import c.www.carovignoviva.Server.GetFromServer;
 import c.www.carovignoviva.R;
 
 public class HomeCitta extends Activity {
@@ -27,12 +25,8 @@ public class HomeCitta extends Activity {
             ListView listView = findViewById(R.id.Listeventi);
         ArrayList<Citta> cityes=null;
         try {
-            cityes = new Citta().eventoFromJson(new GetFromServer().execute("citta.php").get());
+            cityes = new Citta().eventoFromJson(null);
         } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 

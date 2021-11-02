@@ -16,13 +16,11 @@ public class Event implements Serializable {
     private String image;
     private String description;
 
-    ArrayList<Event> eventoFromJson(String json) throws JSONException {
-        JSONArray jsonarray = new JSONArray(json);
+    ArrayList<Event> eventoFromJson(JSONArray jsonarray) throws JSONException {
         ArrayList<Event> events=new ArrayList<> ();
         for (int i = 0; i < jsonarray.length(); i++) {
             JSONObject jsonobject = jsonarray.getJSONObject(i);
             Event evento=new Event();
-            evento.codice = jsonobject.getString("codice");
             evento.nome = jsonobject.getString("nome");
             evento.luogo= jsonobject.getString("luogo");
             evento.ora_inizio= jsonobject.getString("ora_inizio");

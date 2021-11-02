@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "309637476972",
+    "firebase_url": "https://carovigno-viva.firebaseio.com",
+    "project_id": "carovigno-viva",
+    "storage_bucket": "carovigno-viva.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309637476972:android:726cf9282c94bd7b",
+        "android_client_info": {
+          "package_name": "c.www.carovignoviva"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309637476972-632n19731ncujvahc2f7vbeh9cra1g4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0MgFQESk-9gJ3YdMnxAlohusPlkzx4Zo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309637476972-632n19731ncujvahc2f7vbeh9cra1g4a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

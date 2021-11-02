@@ -24,13 +24,12 @@ class Monumento implements Serializable {
     private transient Marker marker;
 
 
-    ArrayList<Monumento>  monumentoFromJson(String json, Context context) throws JSONException {
-        JSONArray jsonarray = new JSONArray(json);
+    ArrayList<Monumento>  monumentoFromJson(JSONArray jsonarray) throws JSONException {
+
         ArrayList<Monumento> monumenti=new ArrayList<> ();
         for (int i = 0; i < jsonarray.length(); i++) {
             JSONObject jsonobject = jsonarray.getJSONObject(i);
             Monumento monumento=new Monumento();
-            monumento.codice = jsonobject.getString("codice");
             monumento.nome = jsonobject.getString("nome");
             monumento.longitude = jsonobject.getDouble("longitude");
             monumento.latitude= jsonobject.getDouble("latitude");
