@@ -13,7 +13,8 @@
             android:id="@+id/titolo_info_complete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="cursive"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="@font/nunito_sans"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="36sp" />
 
@@ -112,6 +113,7 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:fontFamily="monospace"
                 android:text="@string/storia"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
@@ -128,7 +130,9 @@
                 android:id="@+id/descrizione_info_complete"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/averia_libre"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/nunito_sans"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="18sp" />
 

@@ -2,6 +2,7 @@ package c.www.carovignoviva.monuments;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -64,13 +65,21 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
     SlidingUpPanelLayout slidingUpPanelLayout;
     private GoogleMap mMap;
     Location location;
-
+    ProgressDialog nDialog;
+    FirebaseDatabase database;
+    DatabaseReference refDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boolean reachable = false;
         FirebaseApp.initializeApp(this);
+        nDialog = new ProgressDialog(this);
+        nDialog.setMessage("Loading..");
+        nDialog.setTitle("Sto consultando l'enciclopedia");
+        nDialog.setIndeterminate(false);
+        nDialog.setCancelable(true);
+        nDialog.show();
 
         if (!isOnline()) {
             error();
@@ -94,7 +103,8 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
         }
     }
     private void getMonumentFromFirebase(String... voids){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
+
         DatabaseReference myRef = database.getReference("city/"+voids[0]+"/");
         myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -134,6 +144,8 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
                         addMarker();
                         creaLista();
                         setCustomInfoWindows();
+                        nDialog.dismiss();
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
