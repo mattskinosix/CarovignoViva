@@ -8,10 +8,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="320dp"
+        android:layout_width="0dp"
         android:layout_height="157dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/card_background"
@@ -24,10 +24,9 @@
 
         <TextView
             android:id="@+id/TextViewListTitle"
-            android:layout_width="239dp"
-            android:layout_height="36dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif-condensed"
             android:lineSpacingExtra="8sp"
@@ -36,12 +35,13 @@
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.050000012" />
 
         <TextView
             android:id="@+id/ora"
-            android:layout_width="244dp"
+            android:layout_width="0dp"
             android:layout_height="29dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
@@ -58,13 +58,15 @@
 
         <TextView
             android:id="@+id/textViewListVisite"
-            android:layout_width="244dp"
-            android:layout_height="29dp"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif"
             android:textColor="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0.983" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/distance"
@@ -85,7 +87,7 @@
         android:id="@+id/imageViewMonument"
         android:layout_width="70dp"
         android:layout_height="67dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/image_of_monuments"
         app:layout_constraintBottom_toBottomOf="parent"

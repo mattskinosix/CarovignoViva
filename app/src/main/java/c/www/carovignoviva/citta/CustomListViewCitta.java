@@ -46,7 +46,7 @@ public class CustomListViewCitta extends ArrayAdapter<Citta> {
                 tt2.setText(p.getNome());
            }
 
-            ImageView img= v.findViewById(R.id.imageViewMonumentEvent);
+            ImageView img= v.findViewById(R.id.imageListCitta);
             Picasso.get().load(p.getImage())
                     .resize(600,600)
                     .transform(new CropCircleTransformation())

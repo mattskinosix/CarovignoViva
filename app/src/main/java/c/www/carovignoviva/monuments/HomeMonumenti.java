@@ -185,7 +185,7 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
     private void error() {
         setContentView(R.layout.error_network);
         TextView textView = findViewById(R.id.errorview);
-        textView.setText("intetnet è spento");
+        textView.setText("Internet è spento");
 
     }
 

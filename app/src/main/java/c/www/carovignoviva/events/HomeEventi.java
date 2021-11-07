@@ -53,7 +53,7 @@ public class HomeEventi extends Activity {
     private void error() {
         setContentView(R.layout.error_network);
         TextView textView = findViewById(R.id.errorview);
-        textView.setText("intetnet è spento");
+        textView.setText("Internet è spento");
     }
 
     private void getEventFromFirebase(String... voids){
@@ -89,7 +89,6 @@ public class HomeEventi extends Activity {
                     json_array.put(json_obj);
                 }
                 try {
-                    Log.i("test", json_array.toString() );
                     events = new Event().eventoFromJson(json_array);
                     ListView listView = findViewById(R.id.Listeventi);
                     final CustomListViewEvents adapter = new CustomListViewEvents(getBaseContext(), R.layout.list_item_evento,events);

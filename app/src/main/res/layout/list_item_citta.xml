@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewMonumentEvent">
+        app:layout_constraintTop_toBottomOf="@+id/imageListCitta">
 
         <TextView
             android:id="@+id/TextViewListTitleCitta"
@@ -37,7 +37,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageViewMonumentEvent"
+        android:id="@+id/imageListCitta"
         android:layout_width="138dp"
         android:layout_height="128dp"
         android:layout_marginTop="8dp"

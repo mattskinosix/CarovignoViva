@@ -48,7 +48,9 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/Imagepager"
             android:layout_width="match_parent"
-            android:layout_height="262dp">
+            android:layout_height="262dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
         </androidx.viewpager.widget.ViewPager>
 
@@ -111,23 +113,6 @@
             android:orientation="vertical">
 
             <View
-                android:id="@+id/divider5"
-                android:layout_width="match_parent"
-                android:layout_height="23dp"
-                android:background="?android:attr/listDivider" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:fontFamily="monospace"
-                android:text="@string/storia"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                android:textSize="24sp"
-                tools:text="Storia" />
-
-            <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="23dp"
@@ -139,13 +124,13 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:autoText="true"
+                android:autoText="false"
                 android:elegantTextHeight="true"
                 android:fontFamily="@font/nunito_sans"
-                android:textAlignment="center"
+                android:justificationMode="inter_word"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="18sp"
-                app:autoSizeTextType="uniform" />
+                app:autoSizeTextType="none" />
 
         </LinearLayout>
 

@@ -52,9 +52,9 @@ public class CustomListViewEvents extends ArrayAdapter<Event> {
                 ttvisite.setText(p.getOra_inizio());
                 ttvisite2.setText(p.getOra_fine());
             }
-            ImageView img= v.findViewById(R.id.imageViewMonumentEvent);
+            ImageView img= v.findViewById(R.id.imageListEventi);
             Picasso.get().load(p.getImage())
-                    .resize(600,600)
+                    .resize(400,400)
                     .transform(new CropCircleTransformation())
                     .into(img);
 

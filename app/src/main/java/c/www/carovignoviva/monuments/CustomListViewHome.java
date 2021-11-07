@@ -42,9 +42,7 @@ public class CustomListViewHome extends ArrayAdapter<Monumento> {
             assert layerDrawable != null;
             GradientDrawable gradientDrawable = (GradientDrawable) layerDrawable
                     .findDrawableByLayerId(R.id.forma);
-            if (p.getNome().contains("Chiesa")) {
-                gradientDrawable.setColor(Color.WHITE); // change color
-            } else gradientDrawable.setColor(Color.GRAY);
+            gradientDrawable.setColor(Color.WHITE); // change color
             View v = convertView;
 
             if (v == null) {
@@ -59,7 +57,6 @@ public class CustomListViewHome extends ArrayAdapter<Monumento> {
             TextView distance = v.findViewById(R.id.distance);
             DecimalFormat df = new DecimalFormat("0.00");
             if (p.getDistance()!=0) {
-                Log.wtf("EEEEEEEEEEEEEEEEEEEEE", Float.toString(p.getDistance()));
                 distance.setText(df.format(p.getDistance())+" KM");
             }
             if (tt2 != null) {

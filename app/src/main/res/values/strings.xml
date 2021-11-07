@@ -21,7 +21,8 @@
     <string name="monumenti">Monumenti</string>
     <string name="eventi">Eventi</string>
 
-    <string name="ora_inizio_ora_fine">Ora inizio Ora fine</string>
+    <string name="ora_inizio">Ora inizio</string>
+    <string name="ora_fine">Ora fine</string>
     <string name="orario_visite">Orario Visite:</string>
     <string name="portami_qui">Portami Qui</string>
     <string name="storia" translatable="false">Storia</string>

@@ -36,10 +36,14 @@ class Monumento implements Serializable {
             monumento.description = jsonobject.getString("description");
             monumento.detail= jsonobject.getString("detail");
             monumento.orario= jsonobject.getString("orario");
-            monumento.image[0]=jsonobject.getString("img1");
-            monumento.image[1]=jsonobject.getString("img2");
-            monumento.image[2]=jsonobject.getString("img3");
-            monumento.image[3]=jsonobject.getString("img4");
+            if (!jsonobject.isNull("img1"))
+                monumento.image[0]=jsonobject.getString("img1");
+            if (!jsonobject.isNull("img2"))
+                monumento.image[1]=jsonobject.getString("img2");
+            if (!jsonobject.isNull("img3"))
+                monumento.image[2]=jsonobject.getString("img3");
+            if (!jsonobject.isNull("img4"))
+                monumento.image[3]=jsonobject.getString("img4");
             monumento.distance=0;
             monumenti.add(monumento);
         }

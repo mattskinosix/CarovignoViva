@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -41,7 +42,7 @@ public class Information extends Activity implements OnStreetViewPanoramaReadyCa
                             .findFragmentById(R.id.streetviewpanorama);
             streetViewPanoramaFragment.getStreetViewPanoramaAsync(this);
             TextView text= findViewById(R.id.descrizione_info_complete);
-        text.setText(city.getDescription());
+        text.setText(Html.fromHtml(city.getDescription()));
         TextView titolo= findViewById(R.id.titolo_info_complete);
             titolo.setText(city.getNome());
         ViewPager viewPager = findViewById(R.id.Imagepager);

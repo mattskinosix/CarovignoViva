@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,7 +29,7 @@ public class EventInfo extends Activity  {
         Intent intent=getIntent();
             event =(Event)intent.getSerializableExtra("Citta");
             TextView text= findViewById(R.id.descrizione_info_evento);
-        text.setText(event.getDescription());
+        text.setText(Html.fromHtml(event.getDescription()));
         TextView titolo= findViewById(R.id.titolo_info_evento);
             titolo.setText(event.getNome());
 
