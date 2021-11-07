@@ -33,7 +33,6 @@ public class CustomInfoWindowGoogleMap implements GoogleMap.InfoWindowAdapter{
         TextView title = view.findViewById(R.id.title);
        // TextView details = view.findViewById(R.id.details);
         ImageView img = view.findViewById(R.id.imageView2);
-
        // TextView description = view.findViewById(R.id.description);
        // TextView trasport = view.findViewById(R.id.transport);
         int i=0;

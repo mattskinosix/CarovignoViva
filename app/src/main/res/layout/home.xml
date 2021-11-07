@@ -19,7 +19,7 @@
         android:layout_marginBottom="8dp"
         android:autoText="false"
         android:elegantTextHeight="false"
-        android:fontFamily="@font/nunito_sans"
+        android:fontFamily="@font/acme"
         android:freezesText="true"
         android:text="@string/carovignoviva"
         android:textAlignment="center"
@@ -30,7 +30,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="205dp"
+        android:layout_height="333dp"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
@@ -108,7 +108,8 @@
             android:text="@string/citt_vicine"
             android:textAllCaps="false"
             android:textColor="@color/background_material_light"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:visibility="invisible"/>
 
     </LinearLayout>
 

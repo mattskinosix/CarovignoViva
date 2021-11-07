@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Error"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="154dp"
+        android:background="#C86060"
+        android:backgroundTint="#D87878"
+        app:srcCompat="@android:drawable/stat_sys_warning" />
 
     <TextView
         android:id="@+id/errorview"
@@ -16,10 +25,4 @@
         android:textSize="36sp"
         tools:text="Errore di rete" />
 
-    <Button
-        android:id="@+id/refresh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:text="se" />
 </LinearLayout>

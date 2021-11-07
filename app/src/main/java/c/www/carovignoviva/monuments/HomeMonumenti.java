@@ -36,6 +36,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -81,43 +82,48 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
         nDialog.setCancelable(true);
         nDialog.show();
 
-        if (!isOnline()) {
-            error();
-        } else {
 
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            provider = locationManager.getBestProvider(new Criteria(), false);
-            if(Locale.getDefault().getDisplayLanguage().equals("English"))
-                this.getMonumentFromFirebase("carovigno","monumenti");
-            else
-                this.getMonumentFromFirebase("carovigno","monumenti");
-            //CARICO I MONUMENTI DALLA PAGINA PHP
-            // monumenti = new Monumento().monumentoFromJson( getBaseContext());
-            if (provider != null && location != null && adapter != null)
-                setDistances(location.getLatitude(), location.getLongitude());
-            setContentView(R.layout.slideup);
-            MapFragment mapFragment = MapFragment.newInstance();
-            getFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
-            mapFragment.getMapAsync(this);
-            slidingUpPanelLayout = findViewById(R.id.sliding_layout);
-        }
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        provider = locationManager.getBestProvider(new Criteria(), false);
+        if (Locale.getDefault().getDisplayLanguage().equals("English"))
+            this.getMonumentFromFirebase("carovigno", "monumenti");
+        else
+            this.getMonumentFromFirebase("carovigno", "monumenti");
+        //CARICO I MONUMENTI DALLA PAGINA PHP
+        // monumenti = new Monumento().monumentoFromJson( getBaseContext());
+        if (provider != null && location != null && adapter != null)
+            setDistances(location.getLatitude(), location.getLongitude());
+        setContentView(R.layout.slideup);
+        MapFragment mapFragment = MapFragment.newInstance();
+        getFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
+        mapFragment.getMapAsync(this);
+        slidingUpPanelLayout = findViewById(R.id.sliding_layout);
+
     }
-    private void getMonumentFromFirebase(String... voids){
+
+    private void getMonumentFromFirebase(String... voids) {
         database = FirebaseDatabase.getInstance();
 
-        DatabaseReference myRef = database.getReference("city/"+voids[0]+"/");
+        DatabaseReference myRef = database.getReference("city/" + voids[0] + "/");
+        myRef.get().addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                nDialog.dismiss();
+                error();
+            }
+        });
         myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
 
                 JSONArray json_array = new JSONArray();
                 for (DataSnapshot children : task.getResult().child(voids[1]).getChildren()) {
-                    Log.i("test", children.getKey() );
+                    Log.i("test", children.getKey());
                     JSONObject json_obj = new JSONObject();
                     for (DataSnapshot children2 : task.getResult().child(voids[1]).child(children.getKey()).getChildren()) {
                         try {
 
-                            Log.i("test", children2.getKey() );
+                            Log.i("test", children2.getKey());
                             json_obj.put(children2.getKey(), children2.getValue());
 
                         } catch (JSONException e) {
@@ -128,8 +134,8 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
                     for (DataSnapshot children2 : task.getResult().child("image").child(children.getKey()).getChildren()) {
                         try {
 
-                            Log.i("test", children2.getKey() );
-                            json_obj.put("img"+(Integer.parseInt(children2.getKey())+1), children2.getValue());
+                            Log.i("test", children2.getKey());
+                            json_obj.put("img" + (Integer.parseInt(children2.getKey()) + 1), children2.getValue());
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -138,7 +144,7 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
                     json_array.put(json_obj);
                 }
                 try {
-                    Log.i("test", json_array.toString() );
+                    Log.i("test", json_array.toString());
                     monumenti = new Monumento().monumentoFromJson(json_array);
                     if (monumenti != null) {
                         addMarker();
@@ -180,15 +186,7 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
         setContentView(R.layout.error_network);
         TextView textView = findViewById(R.id.errorview);
         textView.setText("intetnet è spento");
-        Button button = findViewById(R.id.refresh);
-        button.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                finish();
-                startActivity(getIntent());
-            }
-        });
     }
 
     public boolean isOnline() {
@@ -232,6 +230,8 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
             location = locationManager.getLastKnownLocation(provider);
 
         }
+        addMarker();
+        setCustomInfoWindows();
         ImageButton slideup = findViewById(R.id.button_up);
         slideup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -318,21 +318,22 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
     }
 
     private void setCustomInfoWindows() {
-        CustomInfoWindowGoogleMap customInfoWindow = new CustomInfoWindowGoogleMap(this, monumenti);
-        mMap.setInfoWindowAdapter(customInfoWindow);
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+        if (mMap != null) {
+            CustomInfoWindowGoogleMap customInfoWindow = new CustomInfoWindowGoogleMap(this, monumenti);
+            mMap.setInfoWindowAdapter(customInfoWindow);
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
-            @Override
-            public void onInfoWindowClick(Marker arg0) {
-                Intent intent = new Intent(HomeMonumenti.this, Information.class);
-                int i = 0;
-                //TO DO
-                while (!arg0.getTitle().equals(monumenti.get(i).getMarker().getTitle())) i++;
-                intent.putExtra("monumenti", monumenti.get(i));
-                startActivity(intent);
-            }
-        });
-
+                @Override
+                public void onInfoWindowClick(Marker arg0) {
+                    Intent intent = new Intent(HomeMonumenti.this, Information.class);
+                    int i = 0;
+                    //TO DO
+                    while (!arg0.getTitle().equals(monumenti.get(i).getMarker().getTitle())) i++;
+                    intent.putExtra("monumenti", monumenti.get(i));
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     private void setDistances(double lat, double lon) {
@@ -345,6 +346,7 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
 
 
     private void addMarker() {
+        if (mMap != null)
         for (Monumento monumento : monumenti) {
             monumento.setMarker(mMap.addMarker(new MarkerOptions()
                     .title(monumento.getNome())
@@ -355,23 +357,32 @@ public class HomeMonumenti extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     public void onLocationChanged(Location location) {
-        location = locationManager.getLastKnownLocation(provider);
-        setDistances(location.getLatitude(), location.getLongitude());
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            location = locationManager.getLastKnownLocation(provider);
+            setDistances(location.getLatitude(), location.getLongitude());
+
+        }
 
 
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        location = locationManager.getLastKnownLocation(provider);
-        setDistances(location.getLatitude(), location.getLongitude());
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            location = locationManager.getLastKnownLocation(provider);
+            setDistances(location.getLatitude(), location.getLongitude());
+
+        }
     }
 
     @Override
     public void onProviderEnabled(String provider) {
         this.provider = locationManager.getBestProvider(new Criteria(), false);
-        location = locationManager.getLastKnownLocation(provider);
-        setDistances(location.getLatitude(), location.getLongitude());
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            location = locationManager.getLastKnownLocation(provider);
+            setDistances(location.getLatitude(), location.getLongitude());
+
+        };
     }
 
     @Override

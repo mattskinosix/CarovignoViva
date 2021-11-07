@@ -12,14 +12,18 @@
             android:id="@+id/titolo_info_evento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="cursive"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/nunito_sans"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="36sp" />
 
         <ImageView
             android:id="@+id/image_evento"
             android:layout_width="match_parent"
-            android:layout_height="262dp"
+            android:layout_height="265dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:contentDescription="@string/immagine_evento">
 
         </ImageView>
@@ -61,11 +65,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:background="?android:attr/listDivider" />
+
             <TextView
                 android:id="@+id/textView_evento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="monospace"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/nunito_sans"
                 android:text="@string/descrizione"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="24sp" />
@@ -80,7 +91,12 @@
                 android:id="@+id/descrizione_info_evento"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/annie_use_your_telescope"
+                android:layout_marginLeft="10dp"
+                android:autoText="true"
+                android:contextClickable="false"
+                android:elegantTextHeight="true"
+                android:fontFamily="@font/nunito_sans"
+                android:textAlignment="center"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textSize="18sp" />
 

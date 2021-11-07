@@ -1,17 +1,21 @@
 package c.www.carovignoviva.events;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -29,26 +33,44 @@ import c.www.carovignoviva.R;
 
 public class HomeEventi extends Activity {
     ArrayList<Event> events=null;
+    ProgressDialog nDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eventi);
-
+        nDialog = new ProgressDialog(this);
+        nDialog.setMessage("Loading..");
+        nDialog.setTitle("Sto consultando l'enciclopedia");
+        nDialog.setIndeterminate(false);
+        nDialog.setCancelable(true);
+        nDialog.show();
             //CREO LA LISTA CON I DATI CONTENUTI NEL VETTORE DI MONUMENTI
         ListView listView = findViewById(R.id.Listeventi);
 
         this.getEventFromFirebase("carovigno", "eventi");
 
     }
-
+    private void error() {
+        setContentView(R.layout.error_network);
+        TextView textView = findViewById(R.id.errorview);
+        textView.setText("intetnet è spento");
+    }
 
     private void getEventFromFirebase(String... voids){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("city/"+voids[0]+"/");
+        myRef.keepSynced(true);
+        myRef.get().addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                nDialog.dismiss();
+                error();
+            }
+        });
         myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-
+                nDialog.dismiss();
                 JSONArray json_array = new JSONArray();
                 for (DataSnapshot children : task.getResult().child(voids[1]).getChildren()) {
                     Log.i("test", children.getKey() );
